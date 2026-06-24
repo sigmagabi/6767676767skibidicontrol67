@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraConnect - Remote Desktop Hub</title>
+    <style>
+        body {
+            background-color: #0c101b;
+            color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .app-container {
+            background: #182232;
+            border: 2px solid #00d2ff;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00d2ff;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .my-credentials {
+            background: #0f1622;
+            border: 1px solid #23334d;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .cred-title {
+            font-size: 12px;
+            color: #7f8c9d;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .cred-value {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .connect-box {
+            border-top: 1px dashed #23334d;
+            padding-top: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: #a0aec0;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            background: #0f1622;
+            border: 1px solid #00d2ff;
+            color: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            background: #00d2ff;
+            color: #0c101b;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #00b4dc;
+        }
+
+        #status-log {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #ffcc00;
+            text-align: center;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>🌐 UltraConnect Remote</h1>
+
+    <div class="my-credentials">
+        <div class="cred-title">Dispozitivul Tău (Date de acces)</div>
+        <div class="cred-value">ID: <span id="my-id">Sincronizare...</span></div>
+        <div class="cred-value">COD: <span id="my-code">Generare...</span></div>
+    </div>
+
+    <div class="connect-box">
+        <div class="cred-title" style="margin-bottom: 15px;">Conectare la partener legat</div>
+        
+        <label for="partner-id">Introduceți ID Partener:</label>
+        <input type="text" id="partner-id" placeholder="Ex: 583 921 402">
+
+        <label for="partner-code">Introduceți Cod de Securitate:</label>
+        <input type="password" id="partner-code" placeholder="Ex: a7x9b">
+
+        <button onclick="incepeConexiunea()">CONECTARE ETICĂ</button>
+    </div>
+
+    <div id="status-log">Sistem gata. Se așteaptă introducerea datelor...</div>
+</div>
+
+<script>
+    // Generăm un ID și un Cod automat pentru tine, exact ca TeamViewer
+    const idAleatoriu = Math.floor(100000000 + Math.random() * 900000000).toString().replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
+    const caractere = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let codAleatoriu = '';
+    for (let i = 0; i < 5; i++) {
+        codAleatoriu += caractere.charAt(Math.floor(Math.random() * caractere.length));
+    }
+
+    document.getElementById('my-id').innerText = idAleatoriu;
+    document.getElementById('my-code').innerText = codAleatoriu;
+
+    // Funcția care simulează încercarea de conectare prin internet
+    function incepeConexiunea() {
+        let partnerId = document.getElementById('partner-id').value.trim();
+        let partnerCode = document.getElementById('partner-code').value.trim();
+        let log = document.getElementById('status-log');
+
+        if (partnerId === "" || partnerCode === "") {
+            log.innerText = "[EROARE]: Trebuie să introduci ID-ul și CODUL partenerului!";
+            log.style.color = "#ff3366";
+            return;
+        }
+
+        log.innerText = ">> Inițializare handshake WebRTC cu serverul intermediar...";
+        log.style.color = "#ffcc00";
+
+        setTimeout(() => {
+            log.innerText = ">> Autentificare reușită! Se deschide stream-ul video securizat...";
+            log.style.color = "#00ff66";
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
